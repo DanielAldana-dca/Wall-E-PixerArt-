@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://0rc1ixnf81la"]
 
-[ext_resource type="Script" uid="uid://c8wtvfo8gtvyn" path="res://MainUI.cs" id="1_uu6xs"]
-[ext_resource type="Script" uid="uid://cnmvg7cmdljog" path="res://CanvasRenderer.cs" id="2_r0du0"]
+[ext_resource type="Script" uid="uid://c8wtvfo8gtvyn" path="res://scripts/ui/MainUI.cs" id="1_uu6xs"]
+[ext_resource type="Script" uid="uid://cnmvg7cmdljog" path="res://scripts/canvas/CanvasRenderer.cs" id="2_r0du0"]
 
 [node name="Node2D" type="Node2D"]
 

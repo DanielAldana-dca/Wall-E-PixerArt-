@@ -1,3 +1,15 @@
-# Godot 4+ specific ignores
+# Godot-generated files
 .godot/
-/android/
+.import/
+.export/
+
+# .NET build artifacts
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# IDE and OS files
+.DS_Store
+Thumbs.db

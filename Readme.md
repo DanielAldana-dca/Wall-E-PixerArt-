@@ -1,132 +1,113 @@
 # Wall-E Pixel Art
 
-A code-driven pixel art editor built with **Godot Engine and C#**. Create digital artwork by writing instructions in a custom programming language designed to control a drawing canvas.
-
-Wall-E combines a code editor, a command interpreter, and a pixel-based drawing environment, allowing you to generate shapes, build patterns, and automate drawing operations through code.
+A code-driven pixel art editor built with **Godot Engine 4.6 and C#**. Create drawings by writing instructions in a custom language and executing them on a pixel-based canvas.
 
 ## Features
 
-- **Pixel art canvas:** Work with a configurable grid ranging from 16 × 16 to 400 × 400 pixels, with a default size of 200 × 200.
-- **Custom scripting language:** Write instructions to control the drawing process using variables, arithmetic expressions, labels, and conditional jumps.
-- **Drawing tools:** Draw lines, circles, and rectangles, fill connected areas, and configure brush colors and sizes.
-- **Code editor:** Write and execute scripts with syntax highlighting.
-- **Project management:** Save and load scripts using the `.pw` file format and access recently opened files.
-- **Canvas navigation:** Use integer coordinates for precise positioning and mouse-wheel zoom to inspect the artwork.
-- **Canvas inspection:** Query drawing state, retrieve coordinates, and inspect pixel colors through supported language functions.
+- Pixel-based drawing canvas with configurable dimensions.
+- Custom language with tokens, parsing, an abstract syntax tree, and an interpreter.
+- Drawing commands for lines, circles, rectangles, and flood fill.
+- Brush color and size controls.
+- Variables, arithmetic expressions, labels, and conditional jumps.
+- Canvas and brush inspection functions.
+- Script editor with line numbers and execution controls.
+- Save and load scripts using the `.pw` format.
+- Canvas grid, clear, and resize controls.
 
-## Technology Stack
+## Technology
 
+- **Engine:** Godot Engine 4.6 (.NET build)
 - **Language:** C#
-- **Engine:** Godot Engine 4.6 with .NET support
-- **Framework:** .NET 8
-- **Application type:** Desktop application
+- **Runtime:** .NET 8
 
-## Getting Started
+## Requirements
 
-### Prerequisites
+Install [Godot Engine 4.6 with .NET support](https://godotengine.org/download/) and the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0). The standard non-.NET Godot build cannot compile the C# project.
 
-Install the following software:
-
-- [Godot Engine .NET 4.6](https://godotengine.org/download/)
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-
-Use a Godot build with C# support rather than the standard build.
-
-### Installation
-
-Clone the repository and navigate to its directory:
+## Run locally
 
 ```bash
 git clone https://github.com/DanielAldana-dca/Wall-E-PixerArt-.git
 cd Wall-E-PixerArt-
 ```
 
-Open the project in Godot by selecting `project.godot`, allow the project to import its resources, and build the C# project if required.
+Open the folder containing `project.godot` in Godot, let the editor import the project, build the C# solution if prompted, and run the main scene.
 
-### Running the Application
+## Example scripts
 
-1. Open the project in Godot.
-2. Build the project if necessary.
-3. Run the main scene, `Main.tscn`.
-4. Write a script in the code editor.
-5. Execute the script to render the drawing on the canvas.
+The `examples/` directory contains sample `.pw` scripts. Open one in the application or copy its contents into the code editor and execute it.
 
-## Scripting Language
+## Language overview
 
-Wall-E uses a custom language for describing drawing operations and controlling their execution.
+The language is case-insensitive for recognized keywords. Its supported operations include:
 
-### Drawing Commands
-
-| Command | Description |
+| Instruction / function | Purpose |
 |---|---|
-| `Spawn(x, y)` | Positions the drawing cursor. |
-| `Color("name")` | Sets the brush color. |
-| `Size(n)` | Sets the brush size, from 1 to 10. |
-| `DrawLine(dx, dy, len)` | Draws a line in a specified direction. |
+| `Spawn(x, y)` | Sets the drawing position. |
+| `Color("Purple")` | Selects the brush color. |
+| `Size(n)` | Sets the brush size. |
+| `DrawLine(dx, dy, length)` | Draws a line. |
 | `DrawCircle(dx, dy, radius)` | Draws a circle. |
-| `DrawRectangle(dx, dy, width, height)` | Draws a rectangle. |
-| `Fill()` | Fills a connected area. |
-| `GoTo[label](condition)` | Jumps to a label when the condition is satisfied. |
+| `DrawRectangle(dx, dy, width, height, stroke)` | Draws a rectangle. |
+| `Fill()` | Fills a connected region from the current drawing position. |
+| `GoTo[label](condition)` | Jumps to a label when the condition evaluates as true. |
+| `GetActualX()` / `GetActualY()` | Reads the current drawing coordinates. |
+| `GetCanvasSize()` | Reads the canvas dimensions. |
+| `GetColorCount(color, x1, y1, x2, y2)` | Counts matching pixels in a rectangular region. |
+| `IsBrushColor(color)` / `IsBrushSize(n)` | Checks the current brush settings. |
+| `IsCanvasColor(color, dx, dy)` | Checks a pixel color relative to the current position. |
 
-### Canvas and Brush Queries
-
-| Function | Description |
-|---|---|
-| `GetActualX()` | Retrieves the current X coordinate. |
-| `GetActualY()` | Retrieves the current Y coordinate. |
-| `GetCanvasSize()` | Retrieves the canvas dimensions. |
-| `GetColorCount(color, x1, y1, x2, y2)` | Counts pixels of a specified color within an area. |
-| `IsBrushColor(color)` | Checks the current brush color. |
-| `IsBrushSize(n)` | Checks the current brush size. |
-| `IsCanvasColor(color, dx, dy)` | Checks a canvas color at a relative position. |
-
-The language uses integer-based arithmetic and coordinates. Decimal values are not supported.
-
-## Example
-
-The following script draws a series of increasingly smaller circles to create a spiral-like pattern.
+Example:
 
 ```text
 Spawn(100, 100)
-
 Color("Purple")
+radius <- 50
 
-radio <- 50
-
-loop_espiral
-
-DrawCircle(1, 1, radio)
-
-radio <- radio - 5
-
-GoTo[loop_espiral](radio > 10)
+loop
+DrawCircle(0, 0, radius)
+radius <- radius - 5
+GoTo[loop](radius > 10)
 ```
 
-This example demonstrates variable assignment, drawing commands, arithmetic operations, labels, and conditional control flow.
+Use the supplied example scripts as the reference for the exact syntax accepted by the current interpreter.
 
-## Project Structure
+## Project structure
 
-The application separates the main stages of script processing and rendering.
+```text
+Wall-E-PixerArt-/
+├── assets/
+│   ├── icon.svg
+│   └── icon.svg.import
+├── examples/
+│   ├── example-01.pw
+│   ├── example-02.pw
+│   ├── example-03.pw
+│   └── example-04.pw
+├── scenes/
+│   └── Main.tscn
+├── scripts/
+│   ├── canvas/
+│   │   └── CanvasRenderer.cs
+│   ├── language/
+│   │   ├── AST.cs
+│   │   ├── CommandRegistry.cs
+│   │   ├── Interpreter.cs
+│   │   ├── Lexer.cs
+│   │   ├── Parser.cs
+│   │   ├── Token.cs
+│   │   └── WallEException.cs
+│   └── ui/
+│       └── MainUI.cs
+├── .gitignore
+├── project.godot
+├── Wall-E.csproj
+└── Wall-E.sln
+```
 
-| File | Responsibility |
-|---|---|
-| `Lexer.cs` | Converts source code into tokens. |
-| `Parser.cs` | Parses tokens into executable instructions. |
-| `AST.cs` | Defines the structures used to represent parsed code. |
-| `Interpreter.cs` | Executes the instructions. |
-| `CommandRegistry.cs` | Registers supported drawing commands. |
-| `CanvasRenderer.cs` | Handles canvas rendering. |
-| `MainUI.cs` | Coordinates the application interface. |
-| `Main.tscn` | Defines the main Godot scene. |
+The `.uid` sidecar files for C# scripts are kept alongside their corresponding scripts so Godot can preserve resource identities.
 
-## Technical Notes
+## Notes
 
-- Canvas dimensions are configurable within the supported range.
-- Coordinates and arithmetic operations use integers.
-- Command names are reserved and cannot be used as variable names.
-- Drawing operations must respect the configured canvas boundaries.
-- Scripts are stored using the `.pw` extension.
-
----
-
-**Wall-E Pixel Art** — Programmatic drawing through a custom scripting language.
+- Godot-generated editor/import data is not included in the source archive; Godot regenerates it when the project is opened.
+- This reorganization separates source files by responsibility and updates the main-scene, script, and icon paths. The application logic itself has not intentionally been changed.
